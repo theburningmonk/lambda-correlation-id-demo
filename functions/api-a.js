@@ -4,11 +4,11 @@ const co         = require('co');
 const log        = require('../lib/log');
 const http       = require('../lib/http');
 const apiHandler = require('../lib/apihandler');
+const sns        = require('../lib/sns');
+const snsTopic   = process.env.snsTopic;
 
 module.exports.handler = apiHandler(
   co.wrap(function* (event, context) {
-    console.log(JSON.stringify(event));
-
     log.debug("this is a DEBUG log");
     log.info("this is an INFO log");
     log.warn("this is a WARNING log");
@@ -26,6 +26,8 @@ module.exports.handler = apiHandler(
     });
 
     log.info(reply);
+
+    yield sns.publish(snsTopic, "Burn them all");
 
     return {
       message: 'A Lannister always pays his debts',

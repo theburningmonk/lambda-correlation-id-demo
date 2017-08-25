@@ -17,6 +17,20 @@
         "-p",
         "sample_events/apig.json"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "sns",
+      "program": "${workspaceRoot}/node_modules/.bin/sls",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "sns",
+        "-p",
+        "sample_events/sns.json"
+      ]
     }
   ]
 }
