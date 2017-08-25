@@ -1,0 +1,28 @@
+{
+  "name": "lambda-correlation-id-demo",
+  "version": "1.0.0",
+  "description": "How to track correlation IDs across APIs, SNS and Kinesis events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theburningmonk/lambda-correlation-id-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theburningmonk/lambda-correlation-id-demo/issues"
+  },
+  "homepage": "https://github.com/theburningmonk/lambda-correlation-id-demo#readme",
+  "devDependencies": {
+    "serverless": "^1.20.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "co": "^4.6.0",
+    "superagent": "^3.6.0",
+    "superagent-promise": "^1.1.0"
+  }
+}
