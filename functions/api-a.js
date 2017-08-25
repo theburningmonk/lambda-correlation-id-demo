@@ -17,7 +17,7 @@ module.exports.handler = apiHandler(
     let host = event.headers.Host;
     let uri  = `https://${host}/dev/api-b`;
 
-    log.info(`calling ${uri}`);
+    log.info("calling api-b", { uri });
 
     let reply = yield http({
       uri     : uri,
@@ -28,6 +28,8 @@ module.exports.handler = apiHandler(
     log.info(reply);
 
     yield sns.publish(snsTopic, "Burn them all");
+
+    log.info("published SNS message", { topic: snsTopic });
 
     return {
       message: 'A Lannister always pays his debts',
