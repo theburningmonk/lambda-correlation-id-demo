@@ -31,6 +31,20 @@
         "-p",
         "sample_events/sns.json"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "kinesis",
+      "program": "${workspaceRoot}/node_modules/.bin/sls",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "kinesis",
+        "-p",
+        "sample_events/kinesis.json"
+      ]
     }
   ]
 }

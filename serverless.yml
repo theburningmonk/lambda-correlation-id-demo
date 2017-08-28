@@ -14,12 +14,21 @@ provider:
       Action:
         - 'sns:Publish'
       Resource: 'arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:correlation-id-test'
+    - Effect: 'Allow'
+      Action:
+        - 'kinesis:GetRecords'
+        - 'kinesis:GetShardIterator'
+        - 'kinesis:DescribeStream'
+        - 'kinesis:ListStreams'
+        - 'kinesis:PutRecord'
+      Resource: 'arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/correlation-id-test'
 
 functions:
   api-a:
     handler: functions/api-a.handler
     environment:
       snsTopic: 'arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:correlation-id-test'
+      streamName: 'correlation-id-test'
     events:
       - http:
           path: /api-a
@@ -31,8 +40,34 @@ functions:
       - http:
           path: /api-b
           method: get
+  
+  api-c:
+    handler: functions/api-c.handler
+    events:
+      - http:
+          path: /api-c
+          method: get
 
   sns:
     handler: functions/sns.handler
     events:
       - sns: correlation-id-test
+
+  kinesis:
+    handler: functions/kinesis.handler
+    events: 
+      # uncomment this section and redeploy after the stream has been created
+      - stream:
+          type: kinesis
+          arn: arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/correlation-id-test
+          batchSize: 10
+          startingPosition: LATEST
+          enabled: true
+
+resources:
+  Resources:
+    kinesisStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: correlation-id-test
+        ShardCount: 1

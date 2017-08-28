@@ -1,0 +1,20 @@
+{
+  "Records": [
+      {
+          "kinesis": {
+              "kinesisSchemaVersion": "1.0",
+              "partitionKey": "partition-key",
+              "sequenceNumber": "49576459592406089733946941213072206262418393955586539522",
+              "data": "eyJtZXNzYWdlIjoiWW91IGFyZSBubyBzb24gb2YgbWluZSIsIl9fY29udGV4dCI6eyJhd3NSZXF1ZXN0SWQiOiJhODk4Y2IxMS04YjhiLTExZTctOWEyMC02M2NlN2RiM2VjNzMiLCJ4LWNvcnJlbGF0aW9uLWlkIjoiYTg5OGNiMTEtOGI4Yi0xMWU3LTlhMjAtNjNjZTdkYjNlYzczIiwiVXNlci1BZ2VudCI6Ik1vemlsbGEvNS4wIChNYWNpbnRvc2g7IEludGVsIE1hYyBPUyBYIDEwXzExXzMpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS82MC4wLjMxMTIuOTAgU2FmYXJpLzUzNy4zNiIsIkRlYnVnLUxvZy1FbmFibGVkIjoiZmFsc2UiLCJ4LWNvcnJlbGF0aW9uLWNoYXJhY3Rlci1hIjoidHl3aW4iLCJ4LWNvcnJlbGF0aW9uLWhvc3QiOiJnbm5ubWVkYmtjLmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tIn19",
+              "approximateArrivalTimestamp": 1503881762.141
+          },
+          "eventSource": "aws:kinesis",
+          "eventVersion": "1.0",
+          "eventID": "shardId-000000000000:49576459592406089733946941213072206262418393955586539522",
+          "eventName": "aws:kinesis:record",
+          "invokeIdentityArn": "arn:aws:iam::499014364541:role/correlation-ids-demo-dev-us-east-1-lambdaRole",
+          "awsRegion": "us-east-1",
+          "eventSourceARN": "arn:aws:kinesis:us-east-1:499014364541:stream/correlation-id-test"
+      }
+  ]
+}
