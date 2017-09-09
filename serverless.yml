@@ -63,11 +63,3 @@ functions:
           batchSize: 10
           startingPosition: LATEST
           enabled: true
-
-resources:
-  Resources:
-    kinesisStream:
-      Type: AWS::Kinesis::Stream
-      Properties:
-        Name: correlation-id-test
-        ShardCount: 1
