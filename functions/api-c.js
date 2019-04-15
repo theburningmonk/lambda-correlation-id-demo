@@ -8,6 +8,6 @@ module.exports.handler = apiHandler((event, context) => {
   log.error("this is an ERROR log");
 
   return {
-    message: 'All dwarfs are bastards in their father’s eyes.'
+    message: "What's dead may never die."
   };
 });
