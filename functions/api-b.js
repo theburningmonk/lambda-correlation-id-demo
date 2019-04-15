@@ -1,13 +1,10 @@
-'use strict';
-
-const co         = require('co');
 const log        = require('../lib/log');
 const apiHandler = require('../lib/apiHandler');
 const http       = require('../lib/http');
 const reqContext = require('../lib/requestContext');
 
 module.exports.handler = apiHandler(
-  co.wrap(function* (event, context) {
+  async (event, context) => {
     reqContext.set("character-b", "little finger");
 
     log.debug("this is a DEBUG log");
@@ -20,7 +17,7 @@ module.exports.handler = apiHandler(
 
     log.info("calling api-c", { uri });
 
-    let reply = yield http({
+    let reply = await http({
       uri     : uri,
       method  : 'GET'
     });
@@ -30,5 +27,4 @@ module.exports.handler = apiHandler(
     return {
       message: 'Chaos is not a pit. Chaos is a ladder.'
     };
-  })
-);
+  });

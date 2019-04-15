@@ -1,13 +1,10 @@
-'use strict';
-
-const co         = require('co');
 const log        = require('../lib/log');
 const snsHandler = require('../lib/snsHandler');
 const http       = require('../lib/http');
 const reqContext = require('../lib/requestContext');
 
 module.exports.handler = snsHandler(
-  co.wrap(function* (event, context) {
+  async (event, context) => {
     reqContext.set("source-type", "sns");
 
     log.debug("this is a DEBUG log");
@@ -21,12 +18,11 @@ module.exports.handler = snsHandler(
       
       log.info("calling api-c", { uri });
     
-      let reply = yield http({
+      let reply = await http({
         uri     : uri,
         method  : 'GET'
       });
     
       log.info(reply);
     }  
-  })
-);
+  });

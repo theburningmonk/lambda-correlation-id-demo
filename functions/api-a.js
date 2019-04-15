@@ -1,6 +1,3 @@
-'use strict';
-
-const co         = require('co');
 const log        = require('../lib/log');
 const http       = require('../lib/http');
 const apiHandler = require('../lib/apiHandler');
@@ -11,7 +8,7 @@ const snsTopic   = process.env.snsTopic;
 const streamName = process.env.streamName;
 
 module.exports.handler = apiHandler(
-  co.wrap(function* (event, context) {
+  async (event, context) => {
     reqContext.set("character-a", "tywin");
 
     log.debug("this is a DEBUG log");
@@ -25,21 +22,21 @@ module.exports.handler = apiHandler(
 
     log.info("calling api-b", { uri });
 
-    let reply = yield http({
+    let reply = await http({
       uri     : uri,
       method  : 'GET'
     });
 
     log.info(reply);
 
-    yield sns.publish(snsTopic, "Burn them all");
+    await sns.publish(snsTopic, "Burn them all");
 
     log.info("published SNS message", { snsTopic });
 
     let kinesisRecord = { 
       message: 'You are no son of mine'
     };
-    yield kinesis.putRecord(streamName, "partition-key", kinesisRecord);
+    await kinesis.putRecord(streamName, "partition-key", kinesisRecord);
 
     log.info("published Kinesis event", { streamName });
 
@@ -47,5 +44,4 @@ module.exports.handler = apiHandler(
       message: 'A Lannister always pays his debts',
       reply: reply
     };
-  })
-);
+  });

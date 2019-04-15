@@ -18,12 +18,13 @@
   "homepage": "https://github.com/theburningmonk/lambda-correlation-id-demo#readme",
   "devDependencies": {
     "aws-sdk": "^2.103.0",
-    "serverless": "^1.20.2",
+    "serverless": "^1.40.0",
     "serverless-pseudo-parameters": "^1.1.5"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
     "co": "^4.6.0",
+    "middy": "^0.25.0",
     "superagent": "^3.6.0",
     "superagent-promise": "^1.1.0"
   }

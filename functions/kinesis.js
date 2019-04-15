@@ -1,6 +1,3 @@
-'use strict';
-
-const co             = require('co');
 const log            = require('../lib/log');
 const kinesisHandler = require('../lib/kinesisHandler');
 const http           = require('../lib/http');
@@ -10,7 +7,7 @@ const reqContext     = require('../lib/requestContext');
 // record at a time so to allow us to inject the correlation IDs that
 // corresponds to each record
 module.exports.handler = kinesisHandler(
-  co.wrap(function* (record, context) {
+  async (record, context) => {
     reqContext.set("source-type", "kinesis");
 
     log.debug("this is a DEBUG log");
@@ -24,12 +21,11 @@ module.exports.handler = kinesisHandler(
       
       log.info("calling api-c", { uri });
     
-      let reply = yield http({
+      let reply = await http({
         uri     : uri,
         method  : 'GET'
       });
     
       log.info(reply);
     } 
-  })
-);
+  });

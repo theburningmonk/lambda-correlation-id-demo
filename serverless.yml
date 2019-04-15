@@ -5,7 +5,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   stage: dev
   region: us-east-1
 
@@ -21,7 +21,8 @@ provider:
         - 'kinesis:DescribeStream'
         - 'kinesis:ListStreams'
         - 'kinesis:PutRecord'
-      Resource: 'arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/correlation-id-test'
+      Resource: 
+        Fn::GetAtt: [Kinesis, Arn]
 
 functions:
   api-a:
@@ -59,7 +60,16 @@ functions:
       # uncomment this section and redeploy after the stream has been created
       - stream:
           type: kinesis
-          arn: arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/correlation-id-test
+          arn: 
+            Fn::GetAtt: [Kinesis, Arn]
           batchSize: 10
           startingPosition: LATEST
           enabled: true
+
+resources:
+  Resources:
+    Kinesis:
+      Type: AWS::Kinesis::Stream
+      Properties: 
+        Name: correlation-id-test
+        ShardCount: 1

@@ -1,5 +1,3 @@
-'use strict';
-
 const log        = require('../lib/log');
 const apiHandler = require('../lib/apiHandler');
 
