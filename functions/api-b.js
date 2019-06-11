@@ -22,7 +22,6 @@ module.exports.handler = wrap(async (event) => {
   })
 
   log.info(reply)
-  
 
   return {
     statusCode: 200,

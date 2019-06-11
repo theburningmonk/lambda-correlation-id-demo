@@ -6,7 +6,6 @@ module.exports.handler = wrap(async (event) => {
   log.info("this is an INFO log")
   log.warn("this is a WARNING log")
   log.error("this is an ERROR log")
-  
 
   return {
     statusCode: 200,

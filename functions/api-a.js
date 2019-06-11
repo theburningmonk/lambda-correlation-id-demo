@@ -45,7 +45,6 @@ module.exports.handler = wrap(async (event) => {
 
   log.info("published Kinesis event", { streamName })
 
-
   return {
     statusCode: 200,
     body: JSON.stringify({
