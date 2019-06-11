@@ -1,28 +1,27 @@
-const log        = require('../lib/log');
-const snsHandler = require('../lib/snsHandler');
-const http       = require('../lib/http');
-const reqContext = require('../lib/requestContext');
+const log = require('@perform/lambda-powertools-logger')
+const wrap = require('@perform/lambda-powertools-pattern-basic')
+const http = require('@perform/lambda-powertools-http-client')
+const correlationIds = require('@perform/lambda-powertools-correlation-ids')
 
-module.exports.handler = snsHandler(
-  async (event, context) => {
-    reqContext.set("source-type", "sns");
+module.exports.handler = wrap(async (event) => {
+  correlationIds.set("source-type", "sns")
 
-    log.debug("this is a DEBUG log");
-    log.info("this is an INFO log");
-    log.warn("this is a WARNING log");
-    log.error("this is an ERROR log");
+  log.debug("this is a DEBUG log")
+  log.info("this is an INFO log")
+  log.warn("this is a WARNING log")
+  log.error("this is an ERROR log")
 
-    let host = reqContext.get()["x-correlation-host"];
-    if (host) {
-      let uri  = `https://${host}/dev/api-c`;
-      
-      log.info("calling api-c", { uri });
+  const host = correlationIds.get()["x-correlation-host"]
+  if (host) {
+    let uri  = `https://${host}/dev/api-c`
     
-      let reply = await http({
-        uri     : uri,
-        method  : 'GET'
-      });
-    
-      log.info(reply);
-    }  
-  });
+    log.info("calling api-c", { uri })
+  
+    const reply = await http({
+      uri : uri,
+      method : 'GET'
+    })
+  
+    log.info(reply)
+  }
+})

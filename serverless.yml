@@ -8,6 +8,8 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
+  tags:
+    STAGE: ${self:provider.stage}
 
   iamRoleStatements:
     - Effect: 'Allow'

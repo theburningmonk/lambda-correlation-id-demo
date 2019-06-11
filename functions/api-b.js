@@ -1,30 +1,33 @@
-const log        = require('../lib/log');
-const apiHandler = require('../lib/apiHandler');
-const http       = require('../lib/http');
-const reqContext = require('../lib/requestContext');
+const log = require('@perform/lambda-powertools-logger')
+const wrap = require('@perform/lambda-powertools-pattern-basic')
+const http = require('@perform/lambda-powertools-http-client')
+const correlationIds = require('@perform/lambda-powertools-correlation-ids')
 
-module.exports.handler = apiHandler(
-  async (event, context) => {
-    reqContext.set("character-b", "little finger");
+module.exports.handler = wrap(async (event) => {
+  correlationIds.set("character-b", "little finger")
 
-    log.debug("this is a DEBUG log");
-    log.info("this is an INFO log");
-    log.warn("this is a WARNING log");
-    log.error("this is an ERROR log");
+  log.debug("this is a DEBUG log")
+  log.info("this is an INFO log")
+  log.warn("this is a WARNING log")
+  log.error("this is an ERROR log")
 
-    let host = event.headers.Host;
-    let uri  = `https://${host}/dev/api-c`;
+  const host = event.headers.Host
+  const uri  = `https://${host}/dev/api-c`
 
-    log.info("calling api-c", { uri });
+  log.info("calling api-c", { uri })
 
-    let reply = await http({
-      uri     : uri,
-      method  : 'GET'
-    });
+  const reply = await http({
+    uri : uri,
+    method : 'GET'
+  })
 
-    log.info(reply);
+  log.info(reply)
+  
 
-    return {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
       message: 'Chaos is not a pit. Chaos is a ladder.'
-    };
-  });
+    })    
+  }
+})

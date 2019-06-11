@@ -1,31 +1,37 @@
-const log            = require('../lib/log');
-const kinesisHandler = require('../lib/kinesisHandler');
-const http           = require('../lib/http');
-const reqContext     = require('../lib/requestContext');
+const log = require('@perform/lambda-powertools-logger')
+const wrap = require('@perform/lambda-powertools-pattern-basic')
+const http = require('@perform/lambda-powertools-http-client')
 
-// the KinesisHandler abstraction takes in a function that processes one
-// record at a time so to allow us to inject the correlation IDs that
-// corresponds to each record
-module.exports.handler = kinesisHandler(
-  async (record, context) => {
-    reqContext.set("source-type", "kinesis");
+module.exports.handler = wrap(async (event, context) => {
+  const events = context.parsedKinesisEvents
 
-    log.debug("this is a DEBUG log");
-    log.info("this is an INFO log");
-    log.warn("this is a WARNING log");
-    log.error("this is an ERROR log");
+  // you can safely process events in parallel
+  await Promise.all(events.map(async evt => {
+    // event has a `logger` attached to it, with the specific correlation IDs for that record
+    evt.logger.debug('handling kinesis event', { event: evt })
 
-    let host = reqContext.get()["x-correlation-host"];
+    // each event has its own correlation Ids as well
+    evt.correlationIds.set("source-type", "kinesis")
+
+    log.debug("this is a DEBUG log")
+    log.info("this is an INFO log")
+    log.warn("this is a WARNING log")
+    log.error("this is an ERROR log")
+
+    const host = evt.correlationIds.get()["x-correlation-host"]
     if (host) {
-      let uri  = `https://${host}/dev/api-c`;
+      const uri  = `https://${host}/dev/api-c`
       
-      log.info("calling api-c", { uri });
+      log.info("calling api-c", { uri })
     
-      let reply = await http({
-        uri     : uri,
-        method  : 'GET'
-      });
+      // pass in the correlation IDs for just this event
+      const reply = await http({
+        uri : uri,
+        method : 'GET',
+        correlationIds: evt.correlationIds
+      })
     
-      log.info(reply);
-    } 
-  });
+      log.info(reply)
+    }
+  }))
+})
